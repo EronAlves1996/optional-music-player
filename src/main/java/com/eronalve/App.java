@@ -17,6 +17,12 @@ public class App {
     String title;
     String artist;
     String genre;
+
+    public boolean isOfGenre(String genre) {
+      return Optional.ofNullable(this.genre)
+          .map(g -> g.equals(genre))
+          .orElse(false);
+    }
   }
 
   private static class Playlist {
@@ -29,9 +35,7 @@ public class App {
       return Optional.ofNullable(songs)
           .map(toStream
               .andThen(s -> s
-                  .filter(song -> Optional.ofNullable(song.genre)
-                      .filter(g -> g.equals(genre))
-                      .isPresent())
+                  .filter(song -> song.isOfGenre(genre))
                   .collect(Collectors.toList())))
           .orElse(Collections.emptyList());
     }
